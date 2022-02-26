@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class Usercontroller extends Controller
+class UserController extends Controller
 {
     public function show(Request $request)
     {
-        return ['success' => true];
+        return;
     }
 }
