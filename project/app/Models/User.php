@@ -19,7 +19,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var string[]
      */
     protected $fillable = [
-        'name', 'email',
+        'phone', 'email', 'last_name', 'first_name',
     ];
 
     /**
@@ -28,6 +28,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var string[]
      */
     protected $hidden = [
-        'password',
+        'password', 'is_admin'
     ];
+    public $timestamps = false;
 }
