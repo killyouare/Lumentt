@@ -15,7 +15,7 @@
 
 $router->group(['prefix' => 'api'], function () use ($router) {
     $router->get('/course_users', 'CourseUserController@create');
-    $router->get('/course_lessons', 'LessonController@create');
+    $router->get('/course_lessons', 'LessonController@index');
     $router->put('course_lesson_users/{id}', 'LessonUserController@update');
 
     $router->group(['prefix' => 'users'], function () use ($router) {
