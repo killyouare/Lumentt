@@ -13,10 +13,24 @@
 |
 */
 
-$router->get('/', function () use ($router) {
-    return $router->app->version();
+$router->group(['prefix' => 'api'], function () use ($router) {
+    $router->get('/course_users', 'CourseUserController@create');
+    $router->get('/course_lessons', 'LessonController@create');
+    $router->put('course_lesson_users/{id}', 'LessonUserController@update');
+
+    $router->group(['prefix' => 'users'], function () use ($router) {
+        $router->get('/', 'UserController@index');
+        $router->post('/register', 'UserController@register');
+        $router->get('/login', 'UserController@login');
+
+        $router->group(['prefix' => '{id}'], function () use ($router) {
+            $router->delete('', 'UserController@delete');
+            $router->put('', 'UserController@change');
+        });
+    });
+
+    $router->group(['prefix' => 'courses'], function () use ($router) {
+        $router->get('', 'CourseController@index');
+        $router->post('', 'CourseController@create');
+    });
 });
-$router->post(
-    '/',
-    'UserController@show'
-);
