@@ -12,26 +12,40 @@
 | and give it the Closure to call when that URI is requested.
 |
 */
-
-$router->group(['prefix' => 'api'], function () use ($router) {
-    $router->get('/course_users', 'CourseUserController@create');
+$router->group([
+    'prefix' => 'api'
+], function () use ($router) {
     $router->get('/course_lessons', 'LessonController@index');
-    $router->put('course_lesson_users/{id}', 'LessonUserController@update');
+    $router->get('/courses', 'CourseController@index');
 
-    $router->group(['prefix' => 'users'], function () use ($router) {
-        $router->get('/', 'UserController@index');
-        $router->post('/register', 'UserController@register');
-        $router->get('/login', 'UserController@login');
+    $router->group([
+        'prefix' => 'users'
+    ], function () use ($router) {
+        $router->post('/register', 'AuthController@register');
+        $router->post('/login', 'AuthController@login');
+    });
+});
 
-        $router->group(['prefix' => '{id}'], function () use ($router) {
+$router->group([
+    'prefix' => 'api',
+    'middleware' => 'api'
+], function () use ($router) {
+    $router->get('/course_users', ['middleware' => 'user', 'CourseUserController@create']);
+    $router->put('course_lesson_users/{id}', ['middleware' => 'user', 'LessonUserController@update']);
+    $router->post('/courses', ['middleware' => 'admin', 'CourseController@create']);
+
+    $router->group([
+        'prefix' => 'users'
+    ], function () use ($router) {
+        $router->get('', ['middleware' => 'admin', 'UserController@index']);
+
+        $router->group([
+            'prefix' => '{id}',
+            'middleware' => ['user', 'owner']
+        ], function () use ($router) {
             $router->delete('', 'UserController@delete');
             $router->put('', 'UserController@change');
         });
-    });
-
-    $router->group(['prefix' => 'courses'], function () use ($router) {
-        $router->get('', 'CourseController@index');
-        $router->post('', 'CourseController@create');
     });
 });
 $router->get('/', 'UserController@index');

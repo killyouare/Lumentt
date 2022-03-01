@@ -10,7 +10,8 @@ class UserController extends Controller
 
     public function index()
     {
-        $users = User::all(['email', 'last_name', 'first_name', 'phone']);
+        // $users = User::all(['email', 'last_name', 'first_name', 'phone']);
+        $users = User::all();
 
         return response()->json([
             'data' => [
