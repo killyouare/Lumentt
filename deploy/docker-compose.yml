@@ -2,11 +2,17 @@ version: '3'
 
 services:
   php:
-    build: './docker/php/'
+    build:
+      context: ../project/
+      dockerfile: ./docker/php/
     container_name: php
     user: '1000:1000'
     ports: ['8000:8000']
-    command: 'php -S 0.0.0.0:8000 -t public'
+    command: 'php -S 0.0.0.0:8080 -t public'
+    working_dir: /var/www
+    restart: unless-stopped
+    volumes:
+      - ../project/:/var/www
   postgres:
     image: postgres:13.3
     container_name: postgres
@@ -16,7 +22,6 @@ services:
       POSTGRES_PASSWORD: "admin"
       PGDATA: "/var/lib/postgresql/data/pgdata"
     volumes:
-      - ../2. Init Database:/docker-entrypoint-initdb.d
       - .:/var/lib/postgresql/data
     ports:
       - "5432:5432"

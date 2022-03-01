@@ -34,3 +34,4 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->post('', 'CourseController@create');
     });
 });
+$router->get('/', 'UserController@index');
