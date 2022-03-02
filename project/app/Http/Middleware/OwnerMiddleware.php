@@ -15,7 +15,7 @@ class OwnerMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if (auth()->user->id !== $request->id) {
+        if (auth()->user()->id != $request->id) {
             return response('Forbidden for you.', 403);
         }
         return $next($request);

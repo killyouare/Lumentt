@@ -44,7 +44,7 @@ $router->group([
             'middleware' => ['user', 'owner']
         ], function () use ($router) {
             $router->delete('', 'UserController@delete');
-            $router->put('', 'UserController@change');
+            $router->put('', 'UserController@update');
         });
     });
 });

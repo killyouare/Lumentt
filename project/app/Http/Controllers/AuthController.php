@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Rules\PhoneNumber;
+
 class AuthController extends Controller
 {
     /**
@@ -24,7 +25,7 @@ class AuthController extends Controller
             'first_name' => 'required|string',
             'last_name' => 'required|string',
             'email' => 'required|email|unique:users',
-            'phone' => ['required','unique:users', new PhoneNumber],
+            'phone' => ['required', 'unique:users', new PhoneNumber],
             'password' => 'required'
         ]);
         User::create([
@@ -67,9 +68,10 @@ class AuthController extends Controller
     protected function respondWithToken($token)
     {
         return response()->json([
-            'access_token' => $token,
-            'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
-        ]);
+            'data' => [
+                'access_token' => $token,
+                'token_type' => 'bearer',
+                'expires_in' => auth()->factory()->getTTL() * 60
+            ]]);
     }
 }
