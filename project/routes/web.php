@@ -28,7 +28,7 @@ $router->group([
 
 $router->group([
     'prefix' => 'api',
-    'middleware' => 'api'
+    'middleware' => 'auth'
 ], function () use ($router) {
     $router->get('/course_users', ['middleware' => 'user', 'CourseUserController@create']);
     $router->put('course_lesson_users/{id}', ['middleware' => 'user', 'LessonUserController@update']);

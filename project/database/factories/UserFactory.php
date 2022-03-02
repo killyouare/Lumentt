@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
-
+use Illuminate\Support\Facades\Crypt;
 class UserFactory extends Factory
 {
     /**
@@ -26,8 +26,7 @@ class UserFactory extends Factory
             'email' => $this->faker->unique()->safeEmail(),
             'last_name' => $this->faker->lastName(),
             'first_name' => $this->faker->name(),
-            'password' => $this->faker->password(),
-            'is_admin' => '0'
+            'password' => Crypt::encrypt($this->faker->password()),
         ];
     }
 }

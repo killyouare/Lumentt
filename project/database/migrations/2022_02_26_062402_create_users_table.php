@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('phone', 16);
             $table->string('last_name', 64);
             $table->string('first_name', 64);
-            $table->boolean('is_admin');
+            $table->boolean('is_admin')->default(0);
         });
     }
 

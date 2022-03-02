@@ -10,7 +10,6 @@ class UserController extends Controller
 
     public function index()
     {
-        // $users = User::all(['email', 'last_name', 'first_name', 'phone']);
         $users = User::all();
 
         return response()->json([
@@ -18,26 +17,6 @@ class UserController extends Controller
                 'users' => $users
             ]
         ], 200);
-    }
-    public function register(Request $request)
-    {
-
-        $this->validate($request, [
-            'first_name' => 'required|string',
-            'last_name' => 'required|string',
-            'email' => 'required|email|unique:users',
-            'password' => 'required'
-        ]);
-
-        return response()->json(['data' => [
-            'msg' => 'User created'
-        ]], 201);
-    }
-    public function login(Request $request)
-    {
-        return response()->json(['data' => [
-            'token' => 'zxczxczxczxcxzczx'
-        ]], 201);
     }
     public function update($id, Request $request)
     {
