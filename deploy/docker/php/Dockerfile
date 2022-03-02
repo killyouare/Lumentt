@@ -1,5 +1,19 @@
-FROM php:8-cli
+FROM php:7.3-fpm-alpine
 
-RUN apt-get update && apt-get install -y curl git zip && apt-get clean 
+RUN set -ex \
+    && apk --no-cache add \
+    postgresql-dev
 
-COPY --from=composer /usr/bin/composer /usr/bin/composer
+RUN docker-php-ext-install pdo_pgsql pgsql
+
+WORKDIR /var/www/html/
+
+RUN php -r "readfile('http://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer
+
+COPY . .
+
+RUN composer install
+
+RUN cp .env.example .env
+
+RUN php artisan key:generate && php artisan jwt:secret
