@@ -15,11 +15,13 @@
 $router->group([
     'prefix' => 'api'
 ], function () use ($router) {
-    $router->get('/course_lessons', 'LessonController@index');
+    $router->get('/course_lessons', ['middleware' => 'guest',
+        'uses' => 'LessonController@index']);
     $router->get('/courses', 'CourseController@index');
 
     $router->group([
-        'prefix' => 'users'
+        'prefix' => 'users',
+        'middleware' => 'guest'
     ], function () use ($router) {
         $router->post('/register', 'AuthController@register');
         $router->post('/login', 'AuthController@login');
@@ -30,14 +32,14 @@ $router->group([
     'prefix' => 'api',
     'middleware' => 'auth'
 ], function () use ($router) {
-    $router->get('/course_users', ['middleware' => 'user', 'CourseUserController@create']);
-    $router->put('course_lesson_users/{id}', ['middleware' => 'user', 'LessonUserController@update']);
-    $router->post('/courses', ['middleware' => 'admin', 'CourseController@create']);
+    $router->post('/course_users', ['middleware' => 'user','uses' => 'CourseUserController@create']);
+    $router->put('course_lesson_users/{id}', ['middleware' => 'user','uses' => 'LessonUserController@update']);
+    $router->post('/courses', ['middleware' => 'admin','uses' => 'CourseController@create']);
 
     $router->group([
         'prefix' => 'users'
     ], function () use ($router) {
-        $router->get('', ['middleware' => 'admin', 'UserController@index']);
+        $router->get('', ['middleware' => 'admin','uses' => 'UserController@index']);
 
         $router->group([
             'prefix' => '{id}',

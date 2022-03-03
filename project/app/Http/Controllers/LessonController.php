@@ -15,6 +15,7 @@ class LessonController extends Controller
         ]);
 
         $lessons = Lesson::where(['course_id' => $request->course_id])->get();
+
         return response()->json([
             'data' => [
                 'lessons' => $lessons

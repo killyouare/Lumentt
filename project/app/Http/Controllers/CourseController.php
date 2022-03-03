@@ -15,12 +15,15 @@ class CourseController extends Controller
     public function create(Request $request)
     {
         $this->validate($request, [
-            'tite' => 'required|string',
-            'student_capacity' => 'required|numberic',
+            'title' => 'required|string',
+            'student_capacity' => 'required|numeric',
             'start_date' => 'required|date|after_or_equal:now',
             'end_date' => 'required|date|after:start_date',
             'has_certificate' => 'required|boolean'
         ]);
+
+        Course::create($request->all());
+
         return response()->json([
             'data' => [
                 'msg' => 'Course created'

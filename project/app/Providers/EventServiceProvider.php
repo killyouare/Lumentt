@@ -12,8 +12,12 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        \App\Events\ExampleEvent::class => [
-            \App\Listeners\ExampleListener::class,
+        \App\Events\RegistrationForCourseEvent::class => [
+            \App\Listeners\ReEntryListener::class,
+            \App\Listeners\OverCountListener::class
+        ],
+        \App\Events\UpdateLessonsEvent::class => [
+            \App\Listeners\UpdateLessonsListener::class,
         ],
     ];
 }

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Course_User extends Model
+class CourseUser extends Model
 {
     use HasFactory;
     /**
@@ -14,7 +14,7 @@ class Course_User extends Model
      * @var string[]
      */
     protected $fillable = [
-        'user_id', 'course_id', 'is_passed'
+        'user_id', 'course_id', 'percentage_passing'
     ];
-    public $timestamp = false;
+    public $timestamps = false;
 }
