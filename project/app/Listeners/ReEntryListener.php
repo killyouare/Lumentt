@@ -17,10 +17,7 @@ class ReEntryListener
             'course_id' => $course,
             'user_id' => $user_id,
         ])->first()) {
-            return response()->json([
-                'error' => 'Юзер уже существует'
-            ]);
+            throw new HttpException(403, 'qweqw');
         }
-
     }
 }

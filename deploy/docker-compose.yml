@@ -1,28 +1,23 @@
-version: "3.5"
-
+version: '3.8'
 services:
-  lumen_post:
-    ports:
-      - "8000:8000"
-    volumes:
-      - ../project:/var/www/html
-      - /var/www/html/vendor/
+  api:
+    container_name: lumen
     build:
-      context: ../project/
+      context: ../project
       dockerfile: ../deploy/docker/php/Dockerfile
-    command: php -S localhost:8080 -t public
-    restart: always
+    ports:
+      - 9000:9000
+    working_dir: /var/www
+    command: php -S localhost:9000 -t public
     depends_on:
-      - lumen_post_db
-
-  lumen_post_db:
-    image: postgres:12.3-alpine
+      - db
+  db:
+    container_name: pgsql
+    image: postgres
     restart: always
     ports:
-      - "5435:5432"
-    volumes:
-      - ./docker/postgres:/var/lib/postgresql/data
+      - 5432:5432
     environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
-      POSTGRES_DB: lumen
+      POSTGRES_DB: "lumen"
+      POSTGRES_USER: "admin"
+      POSTGRES_PASSWORD: "admin"
