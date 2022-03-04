@@ -14,6 +14,13 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 {
     use Authenticatable, Authorizable, HasFactory;
     // Rest omitted for brevity
+    protected $fillable = [
+        'phone', 'email', 'last_name', 'first_name', 'password'
+    ];
+    protected $hidden = [
+        'password', 'is_admin'
+    ];
+    public $timestamps = false;
 
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
@@ -39,17 +46,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      *
      * @var string[]
      */
-    protected $fillable = [
-        'phone', 'email', 'last_name', 'first_name','password'
-    ];
 
-    /**
-     * The attributes excluded from the model's JSON form.
-     *
-     * @var string[]
-     */
-    protected $hidden = [
-        'password', 'is_admin'
-    ];
-    public $timestamps = false;
+    public function courseUsers()
+    {
+        return $this->hasMany(CourseUser::class);
+    }
 }

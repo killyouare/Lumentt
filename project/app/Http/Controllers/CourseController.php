@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CourseResource;
 use App\Models\Course;
 use Illuminate\Http\Request;
 
 class CourseController extends Controller
 {
-
-    public function index(Request $request)
+    public function index()
     {
-        return Course::all();
+        return CourseResource::collection(Course::all());
     }
     public function create(Request $request)
     {

@@ -3,8 +3,10 @@
 namespace App\Listeners;
 
 use App\Events\RegistrationForCourseEvent;
+use App\Exceptions\ApiException;
 use App\Models\CourseUser;
 use http\Env\Response;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class ReEntryListener
@@ -17,7 +19,7 @@ class ReEntryListener
             'course_id' => $course,
             'user_id' => $user_id,
         ])->first()) {
-            throw new HttpException(403, 'qweqw');
+            throw new ApiException(422, 'Юзер уже на курсе');
         }
     }
 }

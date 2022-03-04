@@ -17,4 +17,9 @@ class Course extends Model
         'title', 'student_capacity', 'start_date', 'end_date', 'has_certificate'
     ];
     public $timestamps = false;
+
+    public function lessons()
+    {
+        return $this->hasMany(Lesson::class);
+    }
 }

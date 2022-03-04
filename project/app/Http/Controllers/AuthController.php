@@ -29,8 +29,8 @@ class AuthController extends Controller
             'password' => 'required'
         ]);
         User::create([
-                'password' => Hash::make($request->password)
-            ] + $request->all());
+            'password' => Hash::make($request->password)
+        ] + $request->all());
         return [
             'data' => [
                 'msg' => 'user created'
@@ -46,7 +46,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $this->validate($request, [
-            'email' => 'required',
+            'email' => 'required| email',
             'password' => 'required'
         ]);
 
@@ -69,11 +69,12 @@ class AuthController extends Controller
     {
         return response()->json([
             'data' => [
-                'user_id'=> auth()->id(),
-                'user_is_admin'=> auth()->user()->is_admin,
+                'user_id' => auth()->id(),
+                'user_is_admin' => auth()->user()->is_admin,
                 'access_token' => $token,
                 'token_type' => 'bearer',
                 'expires_in' => auth()->factory()->getTTL() * 60
-            ]]);
+            ]
+        ]);
     }
 }
