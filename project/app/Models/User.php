@@ -15,10 +15,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     use Authenticatable, Authorizable, HasFactory;
     // Rest omitted for brevity
     protected $fillable = [
-        'phone', 'email', 'last_name', 'first_name', 'password'
+        'phone', 'email', 'last_name', 'first_name', 'password', 'is_admin',
     ];
     protected $hidden = [
-        'password', 'is_admin'
+        'password',
     ];
     public $timestamps = false;
 

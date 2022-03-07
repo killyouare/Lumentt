@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Observers\LessonCompliteObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class LessonUser extends Model
 {
-    use HasFactory;
+    use HasFactory, LessonCompliteObserver;
     /**
      * The attributes that are mass assignable.
      *

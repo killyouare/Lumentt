@@ -12,6 +12,7 @@ class CourseController extends Controller
     {
         return CourseResource::collection(Course::all());
     }
+
     public function create(Request $request)
     {
         $this->validate($request, [
