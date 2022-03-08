@@ -13,8 +13,7 @@ class LessonUserController extends Controller
         LessonUser::where([
             'lesson_id' => $id,
             'user_id' => auth()->user()->id
-        ])->firstOrFail()->update(['is_passed' => 1]);
-
+        ])->update(['is_passed' => 1]);
 
         return response()->json(['data' => [
             'msg' => 'Lesson completed'

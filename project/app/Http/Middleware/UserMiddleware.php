@@ -15,7 +15,7 @@ class UserMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if (auth()->user()->is_admin == True) {
+        if (auth()->user()->is_admin) {
             return response()->json(['error' => 'Forbidden for you.'], 403);
         }
         return $next($request);
