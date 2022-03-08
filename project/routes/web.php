@@ -29,21 +29,54 @@ $router->group([
         );
 
         $router->group(['prefix' => 'users'], function () use ($router) {
-            $router->post('/register', 'AuthController@register');
-            $router->post('/login', 'AuthController@login');
+            $router->post(
+                '/register',
+                'AuthController@register'
+            );
+
+            $router->post(
+                '/login',
+                'AuthController@login'
+            );
         });
     });
 
     $router->group(['middleware' => 'auth'], function () use ($router) {
 
-        $router->post('/course_users', ['middleware' => 'user', 'uses' => 'CourseUserController@create']);
-        $router->put('course_lesson_users/{id}', ['middleware' => 'user', 'uses' => 'LessonUserController@update']);
-        $router->post('/courses', ['middleware' => 'admin', 'uses' => 'CourseController@create']);
+        $router->post(
+            '/course_users',
+            [
+                'middleware' => 'user',
+                'uses' => 'CourseUserController@create'
+            ]
+        );
+
+        $router->put(
+            'course_lesson_users/{id}',
+            [
+                'middleware' => 'user',
+                'uses' => 'LessonUserController@update'
+            ]
+        );
+
+        $router->post(
+            '/courses',
+            [
+                'middleware' => 'admin',
+                'uses' => 'CourseController@create'
+            ]
+        );
 
         $router->group([
             'prefix' => 'users'
         ], function () use ($router) {
-            $router->get('', ['middleware' => 'admin', 'uses' => 'UserController@index']);
+            $router->get(
+                '',
+                [
+                    'middleware' => 'admin',
+                    'uses' => 'UserController@index'
+                ]
+            );
 
             $router->group([
                 'prefix' => '{id}',

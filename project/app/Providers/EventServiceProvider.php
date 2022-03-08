@@ -16,11 +16,5 @@ class EventServiceProvider extends ServiceProvider
             \App\Listeners\ReEntryListener::class,
             \App\Listeners\OverCountListener::class
         ],
-        \App\Events\UpdateLessonsEvent::class => [
-            \App\Listeners\UpdateLessonsListener::class,
-        ],
-        \App\Events\UpdatePercentsEvent::class => [
-            \App\Listeners\UpdatePercentsListener::class,
-        ],
     ];
 }

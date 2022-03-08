@@ -13,13 +13,16 @@ trait LessonCompliteObserver
         parent::boot();
 
         static::updated(function ($lessonuser) {
-            $user_id = auth()->user()->id;
+            $user_id = $lessonuser->user_id;
 
             $course_id = Lesson::where('id', $lessonuser->lesson_id)->first()->course_id;
 
             $lessons = Lesson::where('course_id', $course_id)->get('id');
 
-            $complitedLessonsCount = LessonUser::whereIn('lesson_id', $lessons)->where(['user_id' => $user_id, 'is_passed' => 1])->count();
+            $complitedLessonsCount = LessonUser::whereIn('lesson_id', $lessons)->where([
+                'user_id' => $user_id,
+                'is_passed' => 1
+            ])->count();
 
             CourseUser::where([
                 'user_id' => $user_id,

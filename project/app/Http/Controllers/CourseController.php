@@ -17,9 +17,9 @@ class CourseController extends Controller
     {
         $this->validate($request, [
             'title' => 'required|string',
-            'student_capacity' => 'required|numeric',
-            'start_date' => 'required|date|after_or_equal:now',
-            'end_date' => 'required|date|after:start_date',
+            'student_capacity' => 'required|numeric|gt:0',
+            'start_date' => 'required|date_format:Y-m-d|after_or_equal:now',
+            'end_date' => 'required|date_format:Y-m-d|after:start_date',
             'has_certificate' => 'required|boolean'
         ]);
 

@@ -14,7 +14,7 @@ class Course extends Model
      * @var string[]
      */
     protected $fillable = [
-        'title', 'student_capacity', 'start_date', 'end_date', 'has_certificate'
+        'id', 'title', 'student_capacity', 'start_date', 'end_date', 'has_certificate'
     ];
     public $timestamps = false;
 
