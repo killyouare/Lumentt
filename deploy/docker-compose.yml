@@ -5,25 +5,26 @@ version: '3.9'
 services:
   php-fpm:
     container_name: php-fpm
-    tty: true
     build:
       context: ../
       dockerfile: deploy/docker/Dockerfile
+    restart: unless-stopped
+    tty: true
     depends_on:
       - db
   nginx:
     container_name: nginx
     build:
       context: docker/nginx
-    volumes:
-      - ../project/:/var/www
     ports:
       - 80:80
+    volumes:
+      - ../project/:/var/www
     depends_on:
       - php-fpm
+  
   db:
     image: postgres
-    restart: unless-stopped
     tty: true
     ports:
       - "5434:5432"
@@ -32,6 +33,7 @@ services:
       POSTGRES_USER: "admin"
       POSTGRES_PASSWORD: "admin"
       PGDATA: "/var/lib/postgresql/data/pgdata"
+  
   adminer:
     image: adminer
     restart: always
