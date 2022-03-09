@@ -10,7 +10,7 @@ class CourseController extends Controller
 {
     public function index()
     {
-        return CourseResource::collection(Course::all());
+        return CourseResource::collection(Course::all()->sortBy('id'));
     }
 
     public function create(Request $request)
