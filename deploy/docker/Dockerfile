@@ -21,7 +21,7 @@ COPY ./project /var/www
 
 WORKDIR /var/www
 
-RUN composer install
-RUN cp .env.example .env 
-RUN php artisan key:generate 
-RUN php artisan jwt:secret
+RUN composer install \
+ && cp .env.example .env \
+ && php artisan key:generate \
+ && php artisan jwt:secret

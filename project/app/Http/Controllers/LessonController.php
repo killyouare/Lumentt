@@ -11,7 +11,7 @@ class LessonController extends Controller
     public function index(Request $request)
     {
         $this->validate($request, [
-            'course_id' => 'required|numeric'
+            'course_id' => 'required|integer|exists:courses,id'
         ]);
 
         $lessons = Lesson::where(['course_id' => $request->course_id])->get();

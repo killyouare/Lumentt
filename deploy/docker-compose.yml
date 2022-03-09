@@ -12,6 +12,7 @@ services:
     tty: true
     depends_on:
       - db
+
   nginx:
     container_name: nginx
     build:

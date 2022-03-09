@@ -16,7 +16,6 @@
 $router->group([
     'prefix' => 'api',
 ], function () use ($router) {
-    $router->get('/admin', 'UserController@admin');
     $router->get('/courses', 'CourseController@index');
 
     $router->group([

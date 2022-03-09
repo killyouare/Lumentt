@@ -34,10 +34,6 @@ class UserController extends Controller
 
         return response()->json(['data' => [
             'msg' => 'User deleted'
-        ]], 200);
-    }
-    public function admin()
-    {
-        User::where('email', 'admin@admin.com')->first()->update(['is_admin' => 1]);
+        ]]);
     }
 }

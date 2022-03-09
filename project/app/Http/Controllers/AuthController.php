@@ -22,20 +22,18 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $this->validate($request, [
-            'first_name' => 'required|string',
-            'last_name' => 'required|string',
-            'email' => 'required|email|unique:users',
-            'phone' => ['required', 'unique:users', new PhoneNumber],
-            'password' => 'required'
+            'first_name' => 'required|string|max:64',
+            'last_name' => 'required|string|max:64',
+            'email' => 'required|email|unique:users|max:256',
+            'phone' => ['required', 'unique:users', new PhoneNumber, 'max:16'],
+            'password' => 'required|max:256'
         ]);
         User::create([
             'password' => Hash::make($request->password)
         ] + $request->all());
-        return [
-            'data' => [
-                'msg' => 'user created'
-            ]
-        ];
+        return response()->json(['data'=>[
+            'msg'=>'User created'
+        ]], 201);
     }
 
     /**

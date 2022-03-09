@@ -23,7 +23,6 @@ trait LessonCompliteObserver
                 'user_id' => $user_id,
                 'is_passed' => 1
             ])->count();
-
             CourseUser::where([
                 'user_id' => $user_id,
                 'course_id' => $course_id

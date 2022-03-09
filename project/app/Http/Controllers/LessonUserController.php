@@ -10,10 +10,16 @@ class LessonUserController extends Controller
 
     public function update($id)
     {
-        LessonUser::where([
-            'lesson_id' => $id,
-            'user_id' => auth()->user()->id
-        ])->update(['is_passed' => 1]);
+            $lessonUser = LessonUser::where([
+                'lesson_id' => $id,
+                'user_id' => auth()->user()->id
+            ])->first();
+
+            if (!$lessonUser){
+                return response()->json(['errror'=>['message' => 'Данного урока не существует']], 409);
+            }
+            # Здесь используется обсервер наблюдающий за апдейтом, который пересчитывает проценты
+            $lessonUser->update(['is_passed' => 1]);
 
         return response()->json(['data' => [
             'msg' => 'Lesson completed'
