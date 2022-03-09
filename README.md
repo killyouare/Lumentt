@@ -1,7 +1,7 @@
-#Lumen test task 
+# Lumen test task 
 ***
 
-##Установка
+## Установка
 ***
 ```bash
 git clone https://github.com/killyouare/Lumentt.git
@@ -15,7 +15,7 @@ sudo docker exec php-fpm php artisan db:seed
 ```
 Для доступа к adminer:
 
-http://localhost:63
+[localhost](http://localhost:63/)
 
 * System - PostgreSQL
 * Server - db
@@ -23,7 +23,7 @@ http://localhost:63
 * Password - admin
 * Database - lumen
     
-##Примечания
+## Примечания
 ***
 Рекомендуем, при добавлении админа через постман, проставить ему в бд is_admin = 1, в ином случае, половина функий не отработают 
 
