@@ -15,7 +15,7 @@
 ### 2. Настройка
 
 ```bash
-cd lumentt/deploy/
+cd Lumentt/deploy/
 sudo docker-compose up -d --build
 ```
 
