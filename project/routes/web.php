@@ -24,7 +24,7 @@ $router->group([
 
         $router->get(
             '/course_lessons',
-            'LessonController@index'
+            'LessonController@show'
         );
 
         $router->group(['prefix' => 'users'], function () use ($router) {

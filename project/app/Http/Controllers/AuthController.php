@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\ApiException;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -31,8 +32,9 @@ class AuthController extends Controller
         User::create([
             'password' => Hash::make($request->password)
         ] + $request->all());
-        return response()->json(['data'=>[
-            'msg'=>'User created'
+        return response()->json(['data' => [
+            'code' => 201,
+            'message' => 'User created'
         ]], 201);
     }
 
@@ -44,13 +46,13 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $this->validate($request, [
-            'email' => 'required| email',
+            'email' => 'required',
             'password' => 'required'
         ]);
 
         $credentials = request(['email', 'password']);
         if (!$token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            throw new ApiException(401, 'Unauthorized.');
         }
 
         return $this->respondWithToken($token);
@@ -66,11 +68,15 @@ class AuthController extends Controller
     {
         return response()->json([
             'data' => [
-                'user_id' => auth()->id(),
-                'user_is_admin' => auth()->user()->is_admin,
-                'access_token' => $token,
-                'token_type' => 'bearer',
-                'expires_in' => auth()->factory()->getTTL() * 60
+                'code' => 200,
+                'message' => 'User authorizated',
+                'user' => [
+                    'user_id' => auth()->id(),
+                    'user_is_admin' => auth()->user()->is_admin,
+                    'access_token' => $token,
+                    'token_type' => 'bearer',
+                    'expires_in' => auth()->factory()->getTTL() * 60
+                ]
             ]
         ]);
     }

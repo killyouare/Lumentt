@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Exceptions\ApiException;
 use Closure;
 use Illuminate\Contracts\Auth\Factory as Auth;
 
@@ -36,7 +37,7 @@ class Authenticate
     public function handle($request, Closure $next, $guard = null)
     {
         if ($this->auth->guard($guard)->guest()) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            throw new ApiException(401, 'Unauthorized.');
         }
 
         return $next($request);

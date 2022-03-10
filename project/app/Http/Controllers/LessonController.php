@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Lesson;
+use App\Http\Resources\LessonResource;
 use Illuminate\Http\Request;
 
 class LessonController extends Controller
 {
 
-    public function index(Request $request)
+    public function show(Request $request)
     {
         $this->validate($request, [
             'course_id' => 'required|integer|exists:courses,id'
@@ -16,10 +17,6 @@ class LessonController extends Controller
 
         $lessons = Lesson::where(['course_id' => $request->course_id])->get();
 
-        return response()->json([
-            'data' => [
-                'lessons' => $lessons
-            ]
-        ], 200);
+        return LessonResource::collection($lessons);
     }
 }

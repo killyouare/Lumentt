@@ -22,8 +22,7 @@ sudo docker-compose up -d --build
 Ожидаем окончания запуска контейнеров
 
 ```bash
-sudo docker exec php-fpm php artisan migrate:refresh
-sudo docker exec php-fpm php artisan db:seed
+sudo docker exec php-fpm php artisan migrate:refresh --seed
 ```
 
 Сервер доступен по адресу:
@@ -44,7 +43,6 @@ http://localhost:80
 
 - Создать новое окружение и выбрать его.
 - Обозначить host как http://localhost:80/api
-- После регистрации админа поставить ему в бд is_admin = 1.
 - Проходить по дереву запросов строго сверху вниз.
 
 ## Примечания

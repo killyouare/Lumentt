@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Events\RegistrationForCourseEvent;
-use App\Events\UpdateLessonsEvent;
 use App\Models\CourseUser;
 use Illuminate\Http\Request;
 
@@ -26,7 +25,8 @@ class CourseUserController extends Controller
 
         return response()->json([
             'data' => [
-                'msg' => 'Created'
+                'code' => 201,
+                'message' => 'Created',
             ]
         ], 201);
     }

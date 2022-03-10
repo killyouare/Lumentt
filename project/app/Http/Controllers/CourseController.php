@@ -27,7 +27,8 @@ class CourseController extends Controller
 
         return response()->json([
             'data' => [
-                'msg' => 'Course created'
+                'code' => 201,
+                'message' => 'Course created',
             ]
         ], 201);
     }

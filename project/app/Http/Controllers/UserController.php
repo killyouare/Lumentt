@@ -24,8 +24,9 @@ class UserController extends Controller
         User::find($id)->update($request->except('password'));
 
         return response()->json(['data' => [
-            'msg' => 'User updated'
-        ]], 201);
+            'code' => 201,
+            'message' => 'User updated',
+        ]]);
     }
     public function delete($id)
     {
@@ -33,7 +34,8 @@ class UserController extends Controller
         User::destroy($id);
 
         return response()->json(['data' => [
-            'msg' => 'User deleted'
+            'code' => 200,
+            'message' => 'User deleted',
         ]]);
     }
 }

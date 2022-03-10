@@ -3,6 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\Lesson;
+use App\Models\Course;
+
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class LessonFactory extends Factory
@@ -23,7 +25,7 @@ class LessonFactory extends Factory
     {
         return [
             'theme' => $this->faker->word(),
-            'course_id' => $this->faker->randomDigit(),
+            'course_id' => Course::all()->random(),
         ];
     }
 }
