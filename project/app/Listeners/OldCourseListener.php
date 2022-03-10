@@ -9,13 +9,12 @@ use App\Models\CourseUser;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
-class OverCountListener
+class OldCourseListener
 {
     public function handle(RegistrationForCourseEvent $event)
     {
-        $course = Course::where('id', $event->course_id)->first();
-        if (CourseUser::where('course_id', $course->id)->count() >= $course->student_capacity) {
-            throw new ApiException(422, 'The course is full');
+        if (Course::where('id', $event->course_id)->first()->end_date < date('Y-m-d')) {
+            throw new ApiException(422, 'The course is over');
         }
     }
 }

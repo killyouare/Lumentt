@@ -15,8 +15,9 @@ class CourseSeeder extends Seeder
      */
     public function run()
     {
-        $limit = $this->command->ask('Please enter the limit for creating');
-
-        Course::factory($limit)->create();
+        Course::factory(50)->create();
+        Course::factory(3)->create([
+            'end_date' => '2050-03-05'
+        ]);
     }
 }

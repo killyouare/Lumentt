@@ -13,8 +13,9 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $listen = [
         \App\Events\RegistrationForCourseEvent::class => [
+            \App\Listeners\OldCourseListener::class,
             \App\Listeners\ReEntryListener::class,
-            \App\Listeners\OverCountListener::class
+            \App\Listeners\OverCountListener::class,
         ],
     ];
 }

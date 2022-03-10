@@ -2,24 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\UpdatePercentsEvent;
 use App\Models\LessonUser;
+use App\Rules\ComplitedLesson;
+use App\Rules\ExistingLesson;
+use Illuminate\Http\Request;
 
 class LessonUserController extends Controller
 {
 
-    public function update($id)
+    public function update(Request $request)
     {
-        $lessonUser = LessonUser::where([
+        $request->merge(['id' => $request->route('id')]);
+        $this->validate($request, [
+            'id' => ['numeric', new ExistingLesson, new ComplitedLesson]
+        ]);
+        LessonUser::where([
             'lesson_id' => $id,
             'user_id' => auth()->user()->id
-        ])->first();
-
-        if (!$lessonUser) {
-            return response()->json(['errror' => ['message' => 'Данного урока не существует']], 409);
-        }
-        # Здесь используется обсервер наблюдающий за апдейтом, который пересчитывает проценты
-        $lessonUser->update(['is_passed' => 1]);
+        ])->first()->update(['is_passed' => 1]);
 
         return response()->json(['data' => [
             'code' => 200,

@@ -13,13 +13,11 @@ class ReEntryListener
 {
     public function handle(RegistrationForCourseEvent $event)
     {
-        $course = $event->course_id;
-        $user_id = auth()->user()->id;
         if (CourseUser::where([
-            'course_id' => $course,
-            'user_id' => $user_id,
+            'course_id' => $event->course_id,
+            'user_id' => auth()->user()->id,
         ])->first()) {
-            throw new ApiException(422, 'Юзер уже на курсе');
+            throw new ApiException(422, 'You are already enrolled in the course');
         }
     }
 }

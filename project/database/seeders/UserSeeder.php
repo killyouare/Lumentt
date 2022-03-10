@@ -16,7 +16,6 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        $limit = $this->command->ask('Please enter the limit for creating');
 
         User::factory()->create([
             'email' => 'admin',
@@ -28,6 +27,6 @@ class UserSeeder extends Seeder
             'email' => 'user',
             'password' => Hash::make('user'),
         ]);
-        User::factory($limit)->create();
+        User::factory(30)->create();
     }
 }
