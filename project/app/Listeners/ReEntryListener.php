@@ -5,9 +5,6 @@ namespace App\Listeners;
 use App\Events\RegistrationForCourseEvent;
 use App\Exceptions\ApiException;
 use App\Models\CourseUser;
-use http\Env\Response;
-use Illuminate\Http\Exceptions\HttpResponseException;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class ReEntryListener
 {

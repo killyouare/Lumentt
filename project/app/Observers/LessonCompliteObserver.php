@@ -26,7 +26,7 @@ trait LessonCompliteObserver
             CourseUser::where([
                 'user_id' => $user_id,
                 'course_id' => $course_id
-            ])->first()->update(['percentage_passing' => $complitedLessonsCount / $lessons->count() * 100]);
+            ])->first()->update(['percentage_passing' => round($complitedLessonsCount / $lessons->count() * 100)]);
         });
     }
 }

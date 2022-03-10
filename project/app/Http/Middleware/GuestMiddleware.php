@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use App\Exceptions\ApiException;
 use Closure;
 
 class GuestMiddleware
@@ -17,7 +16,7 @@ class GuestMiddleware
     public function handle($request, Closure $next)
     {
         if (auth()->user()) {
-            throw new ApiException(403, 'Forbidden for you.');
+            return response()->json(['error' => ['code' => 403, 'message' => 'Forbidden for you.']], 403);
         }
         return $next($request);
     }

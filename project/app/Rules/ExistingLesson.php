@@ -16,8 +16,7 @@ class ExistingLesson implements Rule
      */
     public function passes($attribute, $value)
     {
-
-        return LessonUser::where([
+        return (bool)LessonUser::where([
             'lesson_id' => $value,
             'user_id' => auth()->user()->id
         ])->first();

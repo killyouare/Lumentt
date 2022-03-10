@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\LessonUser;
-use App\Rules\ComplitedLesson;
 use App\Rules\ExistingLesson;
 use Illuminate\Http\Request;
 
@@ -14,10 +13,10 @@ class LessonUserController extends Controller
     {
         $request->merge(['id' => $request->route('id')]);
         $this->validate($request, [
-            'id' => ['numeric', new ExistingLesson, new ComplitedLesson]
+            'id' => [new ExistingLesson],
         ]);
         LessonUser::where([
-            'lesson_id' => $id,
+            'lesson_id' => $request->id,
             'user_id' => auth()->user()->id
         ])->first()->update(['is_passed' => 1]);
 

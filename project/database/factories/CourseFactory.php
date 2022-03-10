@@ -23,7 +23,7 @@ class CourseFactory extends Factory
     {
         return [
             'title' => $this->faker->word(),
-            'student_capacity' => $this->faker->randomDigit(),
+            'student_capacity' => $this->faker->randomDigit() + 1,
             'start_date' => $this->faker->date(),
             'end_date' => $this->faker->date(),
             'has_certificate' => $this->faker->boolean(),

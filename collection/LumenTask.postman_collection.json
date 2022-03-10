@@ -1,0 +1,2989 @@
+{
+	"info": {
+		"_postman_id": "67d8aafc-7c70-4cf7-908d-b62b5028dd8d",
+		"name": "LumenTask",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Guest Auth",
+			"item": [
+				{
+					"name": "Аутентификация. Админ",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"pm.test(\"Аутентификация Админ - Успех. Correct status\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"let userData = pm.response.json().data",
+									"",
+									"var scheme = {",
+									"    \"type\": \"object\",",
+									"    \"required\": [ \"code\", \"message\", \"user\"],",
+									"    \"properties\": {",
+									"        \"message\": {\"type\": \"string\"},",
+									"        \"code\": {\"type\": \"number\"},",
+									"        \"user\": {",
+									"            \"type\": \"object\",",
+									"            \"required\": [ \"user_id\", \"user_is_admin\", \"access_token\", \"token_type\", \"expires_in\"],",
+									"            \"properties\": {",
+									"                \"user_id\": {\"type\": \"number\"},",
+									"                \"user_is_admin\": {\"type\": \"boolean\"},",
+									"                \"access_token\": {\"type\": \"string\"},",
+									"                \"token_type\": {\"type\": \"string\"},",
+									"                \"expires_in\": {\"type\": \"number\"},",
+									"            }",
+									"        },",
+									"    },",
+									"};",
+									"",
+									"pm.test('Аутентификация Админ - Успех. Correct body', function() {",
+									"    var isValidScheme = tv4.validate(userData, scheme, true, true);",
+									"    pm.expect(isValidScheme).to.be.true;",
+									"",
+									"    pm.environment.set(\"admin_token\", userData.user.access_token);",
+									"    pm.environment.set(\"admin_id\", userData.user.user_id);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "admin",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host}}/users/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Аутентификация. Юзер",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Аутентификация Юзер - Успех. Correct status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"let userData = pm.response.json().data\r",
+									"\r",
+									"var scheme = {\r",
+									"    \"type\": \"object\",\r",
+									"    \"required\": [ \"code\", \"message\", \"user\"],\r",
+									"    \"properties\": {\r",
+									"        \"message\": {\"type\": \"string\"},\r",
+									"        \"code\": {\"type\": \"number\"},\r",
+									"        \"user\": {\r",
+									"            \"type\": \"object\",\r",
+									"            \"required\": [ \"user_id\", \"user_is_admin\", \"access_token\", \"token_type\", \"expires_in\"],\r",
+									"            \"properties\": {\r",
+									"                \"user_id\": {\"type\": \"number\"},\r",
+									"                \"user_is_admin\": {\"type\": \"boolean\"},\r",
+									"                \"access_token\": {\"type\": \"string\"},\r",
+									"                \"token_type\": {\"type\": \"string\"},\r",
+									"                \"expires_in\": {\"type\": \"number\"},\r",
+									"            }\r",
+									"        },\r",
+									"    },\r",
+									"};\r",
+									"\r",
+									"pm.test('Аутентификация Юзер - Успех. Correct body', function() {\r",
+									"    var isValidScheme = tv4.validate(userData, scheme, true, true);\r",
+									"    pm.expect(isValidScheme).to.be.true;\r",
+									"\r",
+									"    pm.environment.set(\"user_token\", userData.user.access_token);\r",
+									"    pm.environment.set(\"user_id\", userData.user.user_id);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "user",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "user",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host}}/users/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Аутентификация. Неверные данные",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Аутентификация - Неверные данные. Correct status\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"",
+									"let userData = pm.response.json().error",
+									"",
+									"var scheme = {",
+									"    \"type\": \"object\",",
+									"    \"required\": [ \"code\", \"message\"],",
+									"    \"properties\": {",
+									"        \"code\": {\"type\": \"number\"},",
+									"        \"message\": {\"type\": \"string\"},",
+									"    },",
+									"};",
+									"",
+									"pm.test('Аутентификация - Неверные данные. Correct body', function() {",
+									"    var isValidScheme = tv4.validate(userData, scheme, true, true);",
+									"    pm.expect(isValidScheme).to.be.true;",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "admin@admin.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "qwewqe",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host}}/users/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Аутентификация. Авторизированный пользователь",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Аутентификация - Авторизованный пользователь. Correct status\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"let userData = pm.response.json().error",
+									"",
+									"var scheme = {",
+									"    \"type\": \"object\",",
+									"    \"required\": [ \"code\", \"message\"],",
+									"    \"properties\": {",
+									"        \"code\": {\"type\": \"number\"},",
+									"        \"message\": {\"type\": \"string\"},",
+									"    },",
+									"};",
+									"",
+									"pm.test('Аутентификация - Неверные данные. Correct body', function() {",
+									"    var isValidScheme = tv4.validate(userData, scheme, true, true);",
+									"    pm.expect(isValidScheme).to.be.true;",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "azzxc",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "qwewqe",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host}}/users/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Аутентификация. Невалидные данные",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Аутентификация - Невалидные данные. Correct status\", function () {",
+									"    pm.response.to.have.status(422);",
+									"});",
+									"",
+									"let userData = pm.response.json().error",
+									"console.log(userData)",
+									"var scheme = {",
+									"    \"type\": \"object\",",
+									"    \"required\": [ \"code\", \"message\", \"errors\"],",
+									"    \"properties\": {",
+									"        \"code\": {\"type\": \"number\"},",
+									"        \"message\": {\"type\": \"string\"},",
+									"        \"errors\": {",
+									"            \"type\": \"object\",",
+									"            \"required\": [ \"email\", \"password\"],",
+									"            \"properties\": {",
+									"                \"email\": {",
+									"                    \"type\": \"array\",",
+									"                    \"items\": {\"type\": \"string\"},",
+									"                },",
+									"                \"password\": {",
+									"                    \"type\": \"array\",",
+									"                    \"items\": {\"type\": \"string\"},",
+									"                },",
+									"            }",
+									"        }",
+									"    },",
+									"};",
+									"",
+									"pm.test('Аутентификация - Невалидные данные. Correct body', function() {",
+									"    var isValidScheme = tv4.validate(userData, scheme, true, true);",
+									"    pm.expect(isValidScheme).to.be.true;",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/users/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Регистрация. Успех",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.test(\"Регистрация - Успех. Correct status\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"let userData = pm.response.json().data\r",
+									"\r",
+									"var scheme = {\r",
+									"    \"type\": \"object\",\r",
+									"    \"required\": [ \"code\", \"message\"],\r",
+									"    \"properties\": {\r",
+									"        \"message\": {\"type\": \"string\"},\r",
+									"        \"code\": {\"type\": \"number\"},\r",
+									"    },\r",
+									"};\r",
+									"\r",
+									"pm.test('Регистрация - Успех. Correct body', function() {\r",
+									"    var isValidScheme = tv4.validate(userData, scheme, true, true);\r",
+									"    pm.expect(isValidScheme).to.be.true;\r",
+									"\r",
+									"    pm.environment.set(\"new_user_login\", pm.request.body.formdata.get('email'));\r",
+									"    pm.environment.set(\"new_user_password\", pm.request.body.formdata.get('password'));\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "{{$randomEmail}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{$randomPassword}}",
+									"type": "text"
+								},
+								{
+									"key": "phone",
+									"value": "{{$randomPhoneNumber}}",
+									"type": "text"
+								},
+								{
+									"key": "last_name",
+									"value": "zxc",
+									"type": "text"
+								},
+								{
+									"key": "first_name",
+									"value": "xc",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host}}/users/register",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Аутентификация. Только что созданный юзер",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"\r",
+									"pm.test(\"Аутентификация - Успех. Correct status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"let userData = pm.response.json().data\r",
+									"\r",
+									"var scheme = {\r",
+									"    \"type\": \"object\",\r",
+									"    \"required\": [ \"code\", \"message\", \"user\"],\r",
+									"    \"properties\": {\r",
+									"        \"message\": {\"type\": \"string\"},\r",
+									"        \"code\": {\"type\": \"number\"},\r",
+									"        \"user\": {\r",
+									"            \"type\": \"object\",\r",
+									"            \"required\": [ \"user_id\", \"user_is_admin\", \"access_token\", \"token_type\", \"expires_in\"],\r",
+									"            \"properties\": {\r",
+									"                \"user_id\": {\"type\": \"number\"},\r",
+									"                \"user_is_admin\": {\"type\": \"boolean\"},\r",
+									"                \"access_token\": {\"type\": \"string\"},\r",
+									"                \"token_type\": {\"type\": \"string\"},\r",
+									"                \"expires_in\": {\"type\": \"number\"},\r",
+									"            }\r",
+									"        },\r",
+									"    },\r",
+									"};\r",
+									"\r",
+									"pm.test('Аутентификация - Успех. Correct body', function() {\r",
+									"    var isValidScheme = tv4.validate(userData, scheme, true, true);\r",
+									"    pm.expect(isValidScheme).to.be.true;\r",
+									"\r",
+									"    pm.environment.set(\"new_user_token\", userData.user.access_token);\r",
+									"pm.environment.set(\"new_user_id\", userData.user.user_id);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "{{new_user_login}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{new_user_password}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host}}/users/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Регистрация. Существующий пользователь",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Регистрация - Существующий пользователь. Correct status\", function () {",
+									"    pm.response.to.have.status(422);",
+									"});",
+									"",
+									"let userData = pm.response.json().error",
+									"console.log(userData)",
+									"var scheme = {",
+									"    \"type\": \"object\",",
+									"    \"required\": [ \"code\", \"message\", \"errors\"],",
+									"    \"properties\": {",
+									"        \"code\": {\"type\": \"number\"},",
+									"        \"message\": {\"type\": \"string\"},",
+									"        \"errors\": {",
+									"            \"type\": \"object\",",
+									"            \"required\": [ \"email\"],",
+									"            \"properties\": {",
+									"                \"email\": {",
+									"                    \"type\": \"array\",",
+									"                    \"items\": {\"type\": \"string\"},",
+									"                }",
+									"            }",
+									"        }",
+									"    },",
+									"};",
+									"",
+									"pm.test('Регистрация - Существующий пользователь. Correct body', function() {",
+									"    var isValidScheme = tv4.validate(userData, scheme, true, true);",
+									"    pm.expect(isValidScheme).to.be.true;",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_admin}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "admin",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "text"
+								},
+								{
+									"key": "phone",
+									"value": "{{$randomPhoneNumber}}",
+									"type": "text"
+								},
+								{
+									"key": "last_name",
+									"value": "zxc",
+									"type": "text"
+								},
+								{
+									"key": "first_name",
+									"value": "zxc",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host}}/users/register",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Регистрация. Авторизированный пользователь",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Регистрация - Авторизованный пользователь. Correct status\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"let userData = pm.response.json().error",
+									"",
+									"var scheme = {",
+									"    \"type\": \"object\",",
+									"    \"required\": [ \"code\", \"message\"],",
+									"    \"properties\": {",
+									"        \"code\": {\"type\": \"number\"},",
+									"        \"message\": {\"type\": \"string\"},",
+									"    },",
+									"};",
+									"",
+									"pm.test('Регистрация - Авторизованный пользователь. Correct body', function() {",
+									"    var isValidScheme = tv4.validate(userData, scheme, true, true);",
+									"    pm.expect(isValidScheme).to.be.true;",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{new_user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "user",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "user",
+									"type": "text"
+								},
+								{
+									"key": "phone",
+									"value": "{{$randomPhoneNumber}}",
+									"type": "text"
+								},
+								{
+									"key": "last_name",
+									"value": "zxc",
+									"type": "text"
+								},
+								{
+									"key": "first_name",
+									"value": "zxc",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host}}/users/register",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Регистрация. Невалидные данные",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Регистрация - Невалидные данные. Correct status\", function () {",
+									"    pm.response.to.have.status(422);",
+									"});",
+									"",
+									"let userData = pm.response.json().error",
+									"console.log(userData)",
+									"var scheme = {",
+									"    \"type\": \"object\",",
+									"    \"required\": [ \"code\", \"message\", \"errors\"],",
+									"    \"properties\": {",
+									"        \"code\": {\"type\": \"number\"},",
+									"        \"message\": {\"type\": \"string\"},",
+									"        \"errors\": {",
+									"            \"type\": \"object\",",
+									"            \"required\": [ \"email\"],",
+									"            \"properties\": {",
+									"                \"first_name\": {",
+									"                    \"type\": \"array\",",
+									"                    \"items\": {\"type\": \"string\"},",
+									"                },",
+									"                \"last_name\": {",
+									"                    \"type\": \"array\",",
+									"                    \"items\": {\"type\": \"string\"},",
+									"                },\"email\": {",
+									"                    \"type\": \"array\",",
+									"                    \"items\": {\"type\": \"string\"},",
+									"                },\"phone\": {",
+									"                    \"type\": \"array\",",
+									"                    \"items\": {\"type\": \"string\"},",
+									"                },\"password\": {",
+									"                    \"type\": \"array\",",
+									"                    \"items\": {\"type\": \"string\"},",
+									"                },",
+									"            }",
+									"        }",
+									"    },",
+									"};",
+									"",
+									"pm.test('Регистрация - Невалидные данные. Correct body', function() {",
+									"    var isValidScheme = tv4.validate(userData, scheme, true, true);",
+									"    pm.expect(isValidScheme).to.be.true;",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"zxc\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/users/register",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"register"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Admin courses",
+			"item": [
+				{
+					"name": "Создание курса. Успех",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"pm.test(\"Создание курса - Успех. Correct status\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"let userData = pm.response.json().data",
+									"",
+									"var scheme = {",
+									"    \"type\": \"object\",",
+									"    \"required\": [ \"code\", \"message\"],",
+									"    \"properties\": {",
+									"        \"message\": {\"type\": \"string\"},",
+									"        \"code\": {\"type\": \"number\"},",
+									"    },",
+									"};",
+									"",
+									"pm.test('Создание курса - Успех. Correct body', function() {",
+									"    var isValidScheme = tv4.validate(userData, scheme, true, true);",
+									"    pm.expect(isValidScheme).to.be.true;",
+									"",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "{{$randomWord}}",
+									"type": "text"
+								},
+								{
+									"key": "student_capacity",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "start_date",
+									"value": "2025-01-03",
+									"type": "text"
+								},
+								{
+									"key": "end_date",
+									"value": "2025-01-04",
+									"type": "text"
+								},
+								{
+									"key": "has_certificate",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host}}/courses",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"courses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Создание курса. Невалидные данные",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Создание курса - Невалидные данные. Correct status\", function () {",
+									"    pm.response.to.have.status(422);",
+									"});",
+									"",
+									"let userData = pm.response.json().error",
+									"console.log(userData)",
+									"var scheme = {",
+									"    \"type\": \"object\",",
+									"    \"required\": [ \"code\", \"message\", \"errors\"],",
+									"    \"properties\": {",
+									"        \"code\": {\"type\": \"number\"},",
+									"        \"message\": {\"type\": \"string\"},",
+									"        \"errors\": {",
+									"            \"type\": \"object\",",
+									"            \"required\": [ \"title\", \"student_capacity\", \"start_date\", \"end_date\", \"has_certificate\"],",
+									"            \"properties\": {",
+									"                \"title\": {",
+									"                    \"type\": \"array\",",
+									"                    \"items\": {\"type\": \"string\"},",
+									"                },",
+									"                \"student_capacity\": {",
+									"                    \"type\": \"array\",",
+									"                    \"items\": {\"type\": \"string\"},",
+									"                },\"start_date\": {",
+									"                    \"type\": \"array\",",
+									"                    \"items\": {\"type\": \"string\"},",
+									"                },\"end_date\": {",
+									"                    \"type\": \"array\",",
+									"                    \"items\": {\"type\": \"string\"},",
+									"                },\"has_certificate\": {",
+									"                    \"type\": \"array\",",
+									"                    \"items\": {\"type\": \"string\"},",
+									"                },",
+									"                ",
+									"            }",
+									"        }",
+									"    },",
+									"};",
+									"",
+									"pm.test('Создание курса - Невалидные данные. Correct body', function() {",
+									"    var isValidScheme = tv4.validate(userData, scheme, true, true);",
+									"    pm.expect(isValidScheme).to.be.true;",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/courses",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"courses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Создание курса. Не авторизован",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Создание курса - Не авторизирован. Correct status\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"",
+									"let userData = pm.response.json().error",
+									"",
+									"var scheme = {",
+									"    \"type\": \"object\",",
+									"    \"required\": [ \"code\", \"message\"],",
+									"    \"properties\": {",
+									"        \"code\": {\"type\": \"number\"},",
+									"        \"message\": {\"type\": \"string\"},",
+									"    },",
+									"};",
+									"",
+									"pm.test('Создание курса - Не авторизирован. Correct body', function() {",
+									"    var isValidScheme = tv4.validate(userData, scheme, true, true);",
+									"    pm.expect(isValidScheme).to.be.true;",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{host}}/courses",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"courses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Создание курса. Юзер",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Создание курса - Юзер. Correct status\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"let userData = pm.response.json().error",
+									"",
+									"var scheme = {",
+									"    \"type\": \"object\",",
+									"    \"required\": [ \"code\", \"message\"],",
+									"    \"properties\": {",
+									"        \"code\": {\"type\": \"number\"},",
+									"        \"message\": {\"type\": \"string\"},",
+									"    },",
+									"};",
+									"",
+									"pm.test('Создание курса - Юзер. Correct body', function() {",
+									"    var isValidScheme = tv4.validate(userData, scheme, true, true);",
+									"    pm.expect(isValidScheme).to.be.true;",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/courses",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"courses"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{admin_token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Guest Courses",
+			"item": [
+				{
+					"name": "Получение всех курсов. Успех",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"",
+									"pm.test(\"Получение всех курсов - Успех. Correct status\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"let userData = pm.response.json().data",
+									"",
+									"var scheme = {",
+									"    \"type\": \"array\",",
+									"};",
+									"",
+									"pm.test('Получение всех курсов - Успех. Correct body', function() {",
+									"    var isValidScheme = tv4.validate(userData, scheme, true, true);",
+									"    pm.expect(isValidScheme).to.be.true;",
+									"    let old_course = userData.findIndex((value) => {",
+									"        if (value.end_date < new Date().toISOString().split('T')[0]){",
+									"            return value;",
+									"        }",
+									"    })",
+									"    let course_index_with_lessons = userData.filter((value) => {",
+									"    if (value.lessons.length > 0 && value.end_date > new Date().toISOString().split('T')[0]){",
+									"        return value;",
+									"    }",
+									"    })",
+									"    console.log(course_index_with_lessons)",
+									"pm.environment.set(\"last_created_course_id\", userData[userData.length-1].id);",
+									"pm.environment.set('course_with_lessons_first', course_index_with_lessons[0].id);",
+									"pm.environment.set('course_with_lessons_second', course_index_with_lessons[1].id);",
+									"pm.environment.set('course_with_lessons_third', course_index_with_lessons[2].id);",
+									"",
+									"pm.environment.set('first_lesson_course_first_id', userData[course_index_with_lessons[1].id - 1].lessons[0].id);",
+									"pm.environment.set('second_lesson_course_second_id', userData[course_index_with_lessons[2].id - 1].lessons[0].id);",
+									"pm.environment.set('third_lesson_course_third_id', userData[course_index_with_lessons[2].id - 1].lessons[1].id);",
+									"pm.environment.set('old_course_id', userData[old_course].id);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/courses",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"courses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получение всех уроков курса. Успех",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"",
+									"pm.test(\"Получение всех курсов - Успех. Correct status\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"let userData = pm.response.json().data",
+									"",
+									"var scheme = {",
+									"    \"type\": \"array\",",
+									"    \"items\": {",
+									"        \"type\": \"object\",",
+									"        \"required\": [ \"id\", \"theme\", \"course_id\"],",
+									"        \"properties\": {",
+									"            \"id\": {\"type\": \"number\"},",
+									"            \"theme\": {\"type\": \"string\"},",
+									"            \"course_id\": {\"type\": \"number\"},",
+									"        }",
+									"    },",
+									"};",
+									"",
+									"pm.test('Получение всех уроков курса - Успех. Correct body', function() {",
+									"    var isValidScheme = tv4.validate(userData, scheme, true, true);",
+									"    pm.expect(isValidScheme).to.be.true;",
+									"",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/course_lessons?course_id={{course_with_lessons_first}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"course_lessons"
+							],
+							"query": [
+								{
+									"key": "course_id",
+									"value": "{{course_with_lessons_first}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получение всех уроков курса. Невалидные данные",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Создание курса - Невалидные данные. Correct status\", function () {",
+									"    pm.response.to.have.status(422);",
+									"});",
+									"",
+									"let userData = pm.response.json().error",
+									"var scheme = {",
+									"    \"type\": \"object\",",
+									"    \"required\": [ \"code\", \"message\", \"errors\"],",
+									"    \"properties\": {",
+									"        \"code\": {\"type\": \"number\"},",
+									"        \"message\": {\"type\": \"string\"},",
+									"        \"errors\": {",
+									"            \"type\": \"object\",",
+									"            \"required\": [ \"course_id\"],",
+									"            \"properties\": {",
+									"                \"course_id\": {",
+									"                    \"type\": \"array\",",
+									"                },",
+									"            }",
+									"        }",
+									"    },",
+									"};",
+									"",
+									"pm.test('Создание курса - Невалидные данные. Correct body', function() {",
+									"    var isValidScheme = tv4.validate(userData, scheme, true, true);",
+									"    pm.expect(isValidScheme).to.be.true;",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/course_lessons?course_id=qweqweqweqw",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"course_lessons"
+							],
+							"query": [
+								{
+									"key": "course_id",
+									"value": "qweqweqweqw"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получение всех уроков курса. Не админ",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Получение всех уроков курса - Авторизованный пользователь. Correct status\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"let userData = pm.response.json().error",
+									"",
+									"var scheme = {",
+									"    \"type\": \"object\",",
+									"    \"required\": [ \"code\", \"message\"],",
+									"    \"properties\": {",
+									"        \"code\": {\"type\": \"number\"},",
+									"        \"message\": {\"type\": \"string\"},",
+									"    },",
+									"};",
+									"",
+									"pm.test('Получение всех уроков курса - Авторизованный пользователь. Correct body', function() {",
+									"    var isValidScheme = tv4.validate(userData, scheme, true, true);",
+									"    pm.expect(isValidScheme).to.be.true;",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/course_lessons?course_id={{lesson_course_id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"course_lessons"
+							],
+							"query": [
+								{
+									"key": "course_id",
+									"value": "{{lesson_course_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User Courses",
+			"item": [
+				{
+					"name": "Запись на последний курс. Успех",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"pm.test(\"Запись на курс - Успех. Correct status\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"let userData = pm.response.json().data",
+									"",
+									"var scheme = {",
+									"    \"type\": \"object\",",
+									"    \"required\": [ \"code\", \"message\"],",
+									"    \"properties\": {",
+									"        \"message\": {\"type\": \"string\"},",
+									"        \"code\": {\"type\": \"number\"},",
+									"    },",
+									"};",
+									"",
+									"pm.test('Запись на курс - Успех. Correct body', function() {",
+									"    var isValidScheme = tv4.validate(userData, scheme, true, true);",
+									"    pm.expect(isValidScheme).to.be.true;",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{new_user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"course_id\": {{last_created_course_id}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/course_users",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"course_users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Запись на первый курс с активными уроками. Успех",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"pm.test(\"Запись на курс - Успех. Correct status\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"let userData = pm.response.json().data",
+									"",
+									"var scheme = {",
+									"    \"type\": \"object\",",
+									"    \"required\": [ \"code\", \"message\"],",
+									"    \"properties\": {",
+									"        \"message\": {\"type\": \"string\"},",
+									"        \"code\": {\"type\": \"number\"},",
+									"    },",
+									"};",
+									"",
+									"pm.test('Запись на курс - Успех. Correct body', function() {",
+									"    var isValidScheme = tv4.validate(userData, scheme, true, true);",
+									"    pm.expect(isValidScheme).to.be.true;",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{new_user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"course_id\": {{course_with_lessons_first}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/course_users",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"course_users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Запись на второй курс с активными уроками. Успех",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"pm.test(\"Запись на курс - Успех. Correct status\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"let userData = pm.response.json().data",
+									"",
+									"var scheme = {",
+									"    \"type\": \"object\",",
+									"    \"required\": [ \"code\", \"message\"],",
+									"    \"properties\": {",
+									"        \"message\": {\"type\": \"string\"},",
+									"        \"code\": {\"type\": \"number\"},",
+									"    },",
+									"};",
+									"",
+									"pm.test('Запись на курс - Успех. Correct body', function() {",
+									"    var isValidScheme = tv4.validate(userData, scheme, true, true);",
+									"    pm.expect(isValidScheme).to.be.true;",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{new_user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"course_id\": {{course_with_lessons_second}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/course_users",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"course_users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Запись на третий курс с активными уроками. Успех",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"pm.test(\"Запись на курс - Успех. Correct status\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"let userData = pm.response.json().data",
+									"",
+									"var scheme = {",
+									"    \"type\": \"object\",",
+									"    \"required\": [ \"code\", \"message\"],",
+									"    \"properties\": {",
+									"        \"message\": {\"type\": \"string\"},",
+									"        \"code\": {\"type\": \"number\"},",
+									"    },",
+									"};",
+									"",
+									"pm.test('Запись на курс - Успех. Correct body', function() {",
+									"    var isValidScheme = tv4.validate(userData, scheme, true, true);",
+									"    pm.expect(isValidScheme).to.be.true;",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{new_user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"course_id\": {{course_with_lessons_third}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/course_users",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"course_users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Запись на курс. Повторная запись",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"pm.test(\"Запись на курс - Повторная запись. Correct status\", function () {",
+									"    pm.response.to.have.status(422);",
+									"});",
+									"",
+									"let userData = pm.response.json().error",
+									"",
+									"var scheme = {",
+									"    \"type\": \"object\",",
+									"    \"required\": [ \"code\", \"message\"],",
+									"    \"properties\": {",
+									"        \"message\": {\"type\": \"string\"},",
+									"        \"code\": {\"type\": \"number\"},",
+									"    },",
+									"};",
+									"",
+									"pm.test('Запись на курс - Повторная запись. Correct body', function() {",
+									"    var isValidScheme = tv4.validate(userData, scheme, true, true);",
+									"    pm.expect(isValidScheme).to.be.true;",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{new_user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"course_id\": {{last_created_course_id}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/course_users",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"course_users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Запись на курс. Закончившийся курс",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"pm.test(\"Запись на курс - Повторная запись. Correct status\", function () {",
+									"    pm.response.to.have.status(422);",
+									"});",
+									"",
+									"let userData = pm.response.json().error",
+									"",
+									"var scheme = {",
+									"    \"type\": \"object\",",
+									"    \"required\": [ \"code\", \"message\"],",
+									"    \"properties\": {",
+									"        \"message\": {\"type\": \"string\"},",
+									"        \"code\": {\"type\": \"number\"},",
+									"    },",
+									"};",
+									"",
+									"pm.test('Запись на курс - Повторная запись. Correct body', function() {",
+									"    var isValidScheme = tv4.validate(userData, scheme, true, true);",
+									"    pm.expect(isValidScheme).to.be.true;",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{new_user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"course_id\": {{old_course_id}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/course_users",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"course_users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Запись на курс. Заполненный курс",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"pm.test(\"Запись на курс - Успех. Correct status\", function () {",
+									"    pm.response.to.have.status(422);",
+									"});",
+									"",
+									"let userData = pm.response.json().error",
+									"",
+									"var scheme = {",
+									"    \"type\": \"object\",",
+									"    \"required\": [ \"code\", \"message\"],",
+									"    \"properties\": {",
+									"        \"message\": {\"type\": \"string\"},",
+									"        \"code\": {\"type\": \"number\"},",
+									"    },",
+									"};",
+									"",
+									"pm.test('Запись на курс - Успех. Correct body', function() {",
+									"    var isValidScheme = tv4.validate(userData, scheme, true, true);",
+									"    pm.expect(isValidScheme).to.be.true;",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"course_id\": {{last_created_course_id}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/course_users",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"course_users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Запись на курс. Не авторизован",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Запись на курс - Не авторизирован. Correct status\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"",
+									"let userData = pm.response.json().error",
+									"",
+									"var scheme = {",
+									"    \"type\": \"object\",",
+									"    \"required\": [ \"code\", \"message\"],",
+									"    \"properties\": {",
+									"        \"code\": {\"type\": \"number\"},",
+									"        \"message\": {\"type\": \"string\"},",
+									"    },",
+									"};",
+									"",
+									"pm.test('Запись на курс - Не авторизирован. Correct body', function() {",
+									"    var isValidScheme = tv4.validate(userData, scheme, true, true);",
+									"    pm.expect(isValidScheme).to.be.true;",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/course_users",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"course_users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Запись на курс. Админ",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Запись на курс - Админ. Correct status\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"let userData = pm.response.json().error",
+									"",
+									"var scheme = {",
+									"    \"type\": \"object\",",
+									"    \"required\": [ \"code\", \"message\"],",
+									"    \"properties\": {",
+									"        \"code\": {\"type\": \"number\"},",
+									"        \"message\": {\"type\": \"string\"},",
+									"    },",
+									"};",
+									"",
+									"pm.test('Запись на курс - Админ. Correct body', function() {",
+									"    var isValidScheme = tv4.validate(userData, scheme, true, true);",
+									"    pm.expect(isValidScheme).to.be.true;",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"course_id\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/course_users",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"course_users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Запись на курс. Невалидный курс",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Запись на курс - Невалидные данные. Correct status\", function () {",
+									"    pm.response.to.have.status(422);",
+									"});",
+									"",
+									"let userData = pm.response.json().error",
+									"var scheme = {",
+									"    \"type\": \"object\",",
+									"    \"required\": [ \"code\", \"message\", \"errors\"],",
+									"    \"properties\": {",
+									"        \"code\": {\"type\": \"number\"},",
+									"        \"message\": {\"type\": \"string\"},",
+									"        \"errors\": {",
+									"            \"type\": \"object\",",
+									"            \"required\": [ \"course_id\"],",
+									"            \"properties\": {",
+									"                \"course_id\": {",
+									"                    \"type\": \"array\",",
+									"                    \"items\": {\"type\": \"string\"},",
+									"                },  ",
+									"            }",
+									"        }",
+									"    },",
+									"};",
+									"",
+									"pm.test('Запись на курс - Невалидные данные. Correct body', function() {",
+									"    var isValidScheme = tv4.validate(userData, scheme, true, true);",
+									"    pm.expect(isValidScheme).to.be.true;",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{new_user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/course_users",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"course_users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Завершение урока№1. Успех",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"pm.test(\"Завершение урока - Успех. Correct status\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"let userData = pm.response.json().data",
+									"",
+									"var scheme = {",
+									"    \"type\": \"object\",",
+									"    \"required\": [ \"code\", \"message\"],",
+									"    \"properties\": {",
+									"        \"message\": {\"type\": \"string\"},",
+									"        \"code\": {\"type\": \"number\"},",
+									"    },",
+									"};",
+									"",
+									"pm.test('Завершение урока - Успех. Correct body', function() {",
+									"    var isValidScheme = tv4.validate(userData, scheme, true, true);",
+									"    pm.expect(isValidScheme).to.be.true;",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{new_user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/course_lesson_users/{{first_lesson_course_first_id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"course_lesson_users",
+								"{{first_lesson_course_first_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Завершение урока №2. Успех Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"pm.test(\"Завершение урока - Успех. Correct status\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"let userData = pm.response.json().data",
+									"",
+									"var scheme = {",
+									"    \"type\": \"object\",",
+									"    \"required\": [ \"code\", \"message\"],",
+									"    \"properties\": {",
+									"        \"message\": {\"type\": \"string\"},",
+									"        \"code\": {\"type\": \"number\"},",
+									"    },",
+									"};",
+									"",
+									"pm.test('Завершение урока - Успех. Correct body', function() {",
+									"    var isValidScheme = tv4.validate(userData, scheme, true, true);",
+									"    pm.expect(isValidScheme).to.be.true;",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{new_user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/course_lesson_users/{{second_lesson_course_second_id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"course_lesson_users",
+								"{{second_lesson_course_second_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Завершение урока №3. Успех",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"pm.test(\"Завершение урока - Успех. Correct status\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"let userData = pm.response.json().data",
+									"",
+									"var scheme = {",
+									"    \"type\": \"object\",",
+									"    \"required\": [ \"code\", \"message\"],",
+									"    \"properties\": {",
+									"        \"message\": {\"type\": \"string\"},",
+									"        \"code\": {\"type\": \"number\"},",
+									"    },",
+									"};",
+									"",
+									"pm.test('Завершение урока - Успех. Correct body', function() {",
+									"    var isValidScheme = tv4.validate(userData, scheme, true, true);",
+									"    pm.expect(isValidScheme).to.be.true;",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{new_user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/course_lesson_users/{{third_lesson_course_third_id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"course_lesson_users",
+								"{{third_lesson_course_third_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Завершение урока. Админ",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Завершение урока - Админ. Correct status\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"let userData = pm.response.json().error",
+									"",
+									"var scheme = {",
+									"    \"type\": \"object\",",
+									"    \"required\": [ \"code\", \"message\"],",
+									"    \"properties\": {",
+									"        \"code\": {\"type\": \"number\"},",
+									"        \"message\": {\"type\": \"string\"},",
+									"    },",
+									"};",
+									"",
+									"pm.test('Завершение урока - Админ. Correct body', function() {",
+									"    var isValidScheme = tv4.validate(userData, scheme, true, true);",
+									"    pm.expect(isValidScheme).to.be.true;",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/course_lesson_users/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"course_lesson_users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Завершение урока. Не авторизирован",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Завершение урока - Не авторизирован. Correct status\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"",
+									"let userData = pm.response.json().error",
+									"",
+									"var scheme = {",
+									"    \"type\": \"object\",",
+									"    \"required\": [ \"code\", \"message\"],",
+									"    \"properties\": {",
+									"        \"code\": {\"type\": \"number\"},",
+									"        \"message\": {\"type\": \"string\"},",
+									"    },",
+									"};",
+									"",
+									"pm.test('Завершение урока - Не авторизирован. Correct body', function() {",
+									"    var isValidScheme = tv4.validate(userData, scheme, true, true);",
+									"    pm.expect(isValidScheme).to.be.true;",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/course_lesson_users/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"course_lesson_users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{new_user_token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Admin Users",
+			"item": [
+				{
+					"name": "Получение всех юзеров. Успех",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"",
+									"pm.test(\"Получение всех юзеров - Успех. Correct status\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"let userData = pm.response.json().data",
+									"var scheme = {",
+									"    \"type\": \"array\",",
+									"        ",
+									"};",
+									"",
+									"pm.test('Получение всех юзеров - Успех. Correct body', function() {",
+									"    var isValidScheme = tv4.validate(userData, scheme, true, true);",
+									"    pm.expect(isValidScheme).to.be.true;",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/users",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получение всех юзеров. Не авторизован",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Получение всех пользователей - Не авторизирован. Correct status\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"",
+									"let userData = pm.response.json().error",
+									"",
+									"var scheme = {",
+									"    \"type\": \"object\",",
+									"    \"required\": [ \"code\", \"message\"],",
+									"    \"properties\": {",
+									"        \"code\": {\"type\": \"number\"},",
+									"        \"message\": {\"type\": \"string\"},",
+									"    },",
+									"};",
+									"",
+									"pm.test('Получение всех пользователей - Не авторизирован. Correct body', function() {",
+									"    var isValidScheme = tv4.validate(userData, scheme, true, true);",
+									"    pm.expect(isValidScheme).to.be.true;",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/users",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получение всех юзеров. Юзер",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Получение всех юзеров - Юзер. Correct status\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"let userData = pm.response.json().error",
+									"",
+									"var scheme = {",
+									"    \"type\": \"object\",",
+									"    \"required\": [ \"code\", \"message\"],",
+									"    \"properties\": {",
+									"        \"code\": {\"type\": \"number\"},",
+									"        \"message\": {\"type\": \"string\"},",
+									"    },",
+									"};",
+									"",
+									"pm.test('Получение всех юзеров - Юзер. Correct body', function() {",
+									"    var isValidScheme = tv4.validate(userData, scheme, true, true);",
+									"    pm.expect(isValidScheme).to.be.true;",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{user_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/users",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User Profile",
+			"item": [
+				{
+					"name": "Редактирование профиля. Успех",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Редактирование профиля - Успех. Correct status\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"let userData = pm.response.json().data",
+									"",
+									"var scheme = {",
+									"    \"type\": \"object\",",
+									"    \"required\": [ \"code\", \"message\"],",
+									"    \"properties\": {",
+									"        \"code\": {\"type\": \"number\"},",
+									"        \"message\": {\"type\": \"string\"},",
+									"    },",
+									"};",
+									"",
+									"pm.test('Редактирование профиля - Успех. Correct body', function() {",
+									"    var isValidScheme = tv4.validate(userData, scheme, true, true);",
+									"    pm.expect(isValidScheme).to.be.true;",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"zxcursed@aweqw.com\"\n\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/users/{{new_user_id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"{{new_user_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Редактирование профиля. Не свой",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Редактирование профиля - Не свой. Correct status\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"let userData = pm.response.json().error",
+									"",
+									"var scheme = {",
+									"    \"type\": \"object\",",
+									"    \"required\": [ \"code\", \"message\"],",
+									"    \"properties\": {",
+									"        \"code\": {\"type\": \"number\"},",
+									"        \"message\": {\"type\": \"string\"},",
+									"    },",
+									"};",
+									"",
+									"pm.test('Редактирование профиля - Не свой. Correct body', function() {",
+									"    var isValidScheme = tv4.validate(userData, scheme, true, true);",
+									"    pm.expect(isValidScheme).to.be.true;",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/users/{{user_id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"{{user_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Редактирование профиля. Не авторизован",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Редактирование профиля - Не авторизирован. Correct status\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"",
+									"let userData = pm.response.json().error",
+									"",
+									"var scheme = {",
+									"    \"type\": \"object\",",
+									"    \"required\": [ \"code\", \"message\"],",
+									"    \"properties\": {",
+									"        \"code\": {\"type\": \"number\"},",
+									"        \"message\": {\"type\": \"string\"},",
+									"    },",
+									"};",
+									"",
+									"pm.test('Редактирование профиля - Не авторизирован. Correct body', function() {",
+									"    var isValidScheme = tv4.validate(userData, scheme, true, true);",
+									"    pm.expect(isValidScheme).to.be.true;",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/users/{{new_user_id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"{{new_user_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Редактирование профиля. Админ",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Редактирование профиля - Админ. Correct status\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"let userData = pm.response.json().error",
+									"",
+									"var scheme = {",
+									"    \"type\": \"object\",",
+									"    \"required\": [ \"code\", \"message\"],",
+									"    \"properties\": {",
+									"        \"code\": {\"type\": \"number\"},",
+									"        \"message\": {\"type\": \"string\"},",
+									"    },",
+									"};",
+									"",
+									"pm.test('Редактирование профиля - Админ. Correct body', function() {",
+									"    var isValidScheme = tv4.validate(userData, scheme, true, true);",
+									"    pm.expect(isValidScheme).to.be.true;",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/users/{{new_user_id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"{{new_user_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Удаление профиля. Не свой",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Удаление профиля - Не свой. Correct status\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"let userData = pm.response.json().error",
+									"",
+									"var scheme = {",
+									"    \"type\": \"object\",",
+									"    \"required\": [ \"code\", \"message\"],",
+									"    \"properties\": {",
+									"        \"code\": {\"type\": \"number\"},",
+									"        \"message\": {\"type\": \"string\"},",
+									"    },",
+									"};",
+									"",
+									"pm.test('Удаление профиля - Не свой. Correct body', function() {",
+									"    var isValidScheme = tv4.validate(userData, scheme, true, true);",
+									"    pm.expect(isValidScheme).to.be.true;",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/users/{{user_id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"{{user_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Удаление профиля. Не авторизован",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Удаление профиля - Не авторизирован. Correct status\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"",
+									"let userData = pm.response.json().error",
+									"",
+									"var scheme = {",
+									"    \"type\": \"object\",",
+									"    \"required\": [ \"code\", \"message\"],",
+									"    \"properties\": {",
+									"        \"code\": {\"type\": \"number\"},",
+									"        \"message\": {\"type\": \"string\"},",
+									"    },",
+									"};",
+									"",
+									"pm.test('Удаление профиля - Не авторизирован. Correct body', function() {",
+									"    var isValidScheme = tv4.validate(userData, scheme, true, true);",
+									"    pm.expect(isValidScheme).to.be.true;",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/users/{{new_user_id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"{{new_user_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Удаление профиля. Админ",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Удаление профиля - Админ. Correct status\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"let userData = pm.response.json().error",
+									"",
+									"var scheme = {",
+									"    \"type\": \"object\",",
+									"    \"required\": [ \"code\", \"message\"],",
+									"    \"properties\": {",
+									"        \"code\": {\"type\": \"number\"},",
+									"        \"message\": {\"type\": \"string\"},",
+									"    },",
+									"};",
+									"",
+									"pm.test('Удаление профиля - Админ. Correct body', function() {",
+									"    var isValidScheme = tv4.validate(userData, scheme, true, true);",
+									"    pm.expect(isValidScheme).to.be.true;",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/users/{{new_user_id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"{{new_user_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Удаление профиля. Успех",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Удаление профиля - Успех. Correct status\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"let userData = pm.response.json().data",
+									"",
+									"var scheme = {",
+									"    \"type\": \"object\",",
+									"    \"required\": [ \"code\", \"message\"],",
+									"    \"properties\": {",
+									"        \"code\": {\"type\": \"number\"},",
+									"        \"message\": {\"type\": \"string\"},",
+									"    },",
+									"};",
+									"",
+									"pm.test('Удаление профиля - Успех. Correct body', function() {",
+									"    var isValidScheme = tv4.validate(userData, scheme, true, true);",
+									"    pm.expect(isValidScheme).to.be.true;",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/users/{{new_user_id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"{{new_user_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{new_user_token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	]
+}

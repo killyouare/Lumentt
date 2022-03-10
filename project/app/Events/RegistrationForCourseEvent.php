@@ -15,5 +15,4 @@ class RegistrationForCourseEvent extends Event
     {
         $this->course_id = $course_id;
     }
-
 }
